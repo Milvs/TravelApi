@@ -19,7 +19,6 @@ public class Location { //Parent
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-
     @NotNull
     private int number;
 
