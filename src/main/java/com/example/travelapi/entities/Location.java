@@ -1,6 +1,7 @@
 package com.example.travelapi.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.util.Set;
@@ -15,19 +16,25 @@ import java.util.Set;
 public class Location { //Parent
 
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+
+    @NotNull
     private int number;
 
+    @NotNull
     private String country;
 
+    @NotNull
     private String city;
 
+    @NotNull
     private String street;
 
+    @NotNull
     private String imageUrl;
 
-    @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL,mappedBy = "location")
+    @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL, mappedBy = "location")
     private Set<Holiday> holidays;
 }

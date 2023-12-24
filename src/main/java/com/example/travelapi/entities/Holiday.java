@@ -6,6 +6,7 @@ import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
+import java.util.Set;
 
 @Table(name = "holidays")
 @Entity
@@ -22,11 +23,13 @@ public class Holiday {
 
     @NotNull
     private String title;
+
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date startDate;
 
     @NotNull
     private int freeSlots;
+
     @NotNull
     private int duration;
 
@@ -35,5 +38,8 @@ public class Holiday {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Location location;
+
+    @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL, mappedBy = "holiday")
+    private Set<Reservation> reservations;
 
 }
