@@ -31,11 +31,12 @@ public class HolidayController {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ResponseHolidayDTO> createHoliday(@RequestBody CreateHolidayDTO createHolidayDTO) {
-        ResponseHolidayDTO response = holidayService.createHoliday(createHolidayDTO);
-        if (response == null) {
+        try {
+            ResponseHolidayDTO response = holidayService.createHoliday(createHolidayDTO);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
@@ -63,11 +64,12 @@ public class HolidayController {
 
     @GetMapping("/{id}")
     public ResponseEntity<ResponseHolidayDTO> getHolidayById(@PathVariable Long id) {
-        ResponseHolidayDTO holiday = holidayService.getHolidayById(id);
-        if (holiday == null) {
+        try {
+            ResponseHolidayDTO holiday = holidayService.getHolidayById(id);
+            return new ResponseEntity<>(holiday, HttpStatus.OK);
+        } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>(holiday, HttpStatus.OK);
     }
 
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)

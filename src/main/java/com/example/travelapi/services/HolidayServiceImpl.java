@@ -8,6 +8,7 @@ import com.example.travelapi.entities.Location;
 import com.example.travelapi.repositories.HolidayRepository;
 import com.example.travelapi.repositories.LocationRepository;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.dialect.unique.CreateTableUniqueDelegate;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -64,10 +65,11 @@ public class HolidayServiceImpl implements HolidayService{
 
     @Override
     public ResponseHolidayDTO getHolidayById(Long id) {
-        Optional<Holiday> holiday = holidayRepository.findById(id);
+        Holiday holiday = holidayRepository.findById(id).orElseThrow(() -> {
+            final String errorMessage =
+                    String.format("Holiday not found for id = %s", id);
+            return new IllegalArgumentException(errorMessage);});
         return modelMapper.map(holiday, ResponseHolidayDTO.class);
-
-
     }
 
     @Override
@@ -76,6 +78,7 @@ public class HolidayServiceImpl implements HolidayService{
             final String errorMessage =
                     String.format("Holiday not found for id = %s", updateHoliday.getId());
             return new IllegalArgumentException(errorMessage);});
+
         Location location = locationRepository.findById(updateHoliday.getLocation()).orElseThrow();
         holiday.setPrice(updateHoliday.getPrice());
         holiday.setDuration(updateHoliday.getDuration());
@@ -83,8 +86,6 @@ public class HolidayServiceImpl implements HolidayService{
         holiday.setStartDate(updateHoliday.getStartDate());
         holiday.setTitle(updateHoliday.getTitle());
         holidayRepository.save(holiday);
-
-
 
         return modelMapper.map(holiday,ResponseHolidayDTO.class);
     }
