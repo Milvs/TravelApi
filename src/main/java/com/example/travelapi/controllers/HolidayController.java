@@ -2,6 +2,7 @@ package com.example.travelapi.controllers;
 
 import com.example.travelapi.dtos.CreateHolidayDTO;
 import com.example.travelapi.dtos.ResponseHolidayDTO;
+import com.example.travelapi.dtos.UpdateHolidayDTO;
 import com.example.travelapi.services.HolidayService;
 import com.example.travelapi.services.HolidayServiceImpl;
 import lombok.RequiredArgsConstructor;
@@ -31,14 +32,14 @@ public class HolidayController {
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ResponseHolidayDTO> createHoliday(@RequestBody CreateHolidayDTO createHolidayDTO) {
         ResponseHolidayDTO response = holidayService.createHoliday(createHolidayDTO);
-        if (response==null){
+        if (response == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Boolean> deleteById( @PathVariable Long id) {
+    public ResponseEntity<Boolean> deleteById(@PathVariable Long id) {
         boolean response = holidayService.deleteHolidayById(id);
         if (!response) {
             return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
@@ -52,21 +53,33 @@ public class HolidayController {
             @RequestParam(required = false) Long location,
             @RequestParam(required = false) Date startDate,
             @RequestParam(required = false) Integer duration
-    ){
-        List<ResponseHolidayDTO> holidays = holidayService.getAllHolidays(location,startDate,duration);
-        if(holidays.isEmpty()){
+    ) {
+        List<ResponseHolidayDTO> holidays = holidayService.getAllHolidays(location, startDate, duration);
+        if (holidays.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>(holidays,HttpStatus.OK);
+        return new ResponseEntity<>(holidays, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ResponseHolidayDTO> getHolidayById(@PathVariable Long id){
+    public ResponseEntity<ResponseHolidayDTO> getHolidayById(@PathVariable Long id) {
         ResponseHolidayDTO holiday = holidayService.getHolidayById(id);
-        if(holiday==null){
+        if (holiday == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>(holiday,HttpStatus.OK);
+        return new ResponseEntity<>(holiday, HttpStatus.OK);
+    }
+
+    @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ResponseHolidayDTO> updateHoliday(@RequestBody UpdateHolidayDTO updateHolidayDTO) {
+        try {
+            ResponseHolidayDTO holiday = holidayService.updateHoliday(updateHolidayDTO);
+            return new ResponseEntity<>(holiday, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+
     }
 
 }

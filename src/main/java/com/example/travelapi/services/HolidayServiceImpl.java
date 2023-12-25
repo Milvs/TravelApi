@@ -71,8 +71,22 @@ public class HolidayServiceImpl implements HolidayService{
     }
 
     @Override
-    public ResponseHolidayDTO updateHoliday(UpdateHolidayDTO updateHolidayDTO) {
-        return null;
+    public ResponseHolidayDTO updateHoliday(UpdateHolidayDTO updateHoliday) {
+        Holiday holiday = holidayRepository.findById(updateHoliday.getId()).orElseThrow(() -> {
+            final String errorMessage =
+                    String.format("Holiday not found for id = %s", updateHoliday.getId());
+            return new IllegalArgumentException(errorMessage);});
+        Location location = locationRepository.findById(updateHoliday.getLocation()).orElseThrow();
+        holiday.setPrice(updateHoliday.getPrice());
+        holiday.setDuration(updateHoliday.getDuration());
+        holiday.setLocation(location);
+        holiday.setStartDate(updateHoliday.getStartDate());
+        holiday.setTitle(updateHoliday.getTitle());
+        holidayRepository.save(holiday);
+
+
+
+        return modelMapper.map(holiday,ResponseHolidayDTO.class);
     }
 }
 
