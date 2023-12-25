@@ -11,7 +11,10 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -41,18 +44,30 @@ public class HolidayServiceImpl implements HolidayService{
     }
 
     @Override
-    public void deleteHolidayById(Long id) {
+    public Boolean deleteHolidayById(Long id) {
+        Holiday holiday = holidayRepository.findById(id).orElse(null);
+        if (holiday!=null){
+            holidayRepository.delete(holiday);
+            return true;
+        }
+        return false;
 
     }
 
     @Override
-    public List<ResponseHolidayDTO> getAllHolidays() {
-        return null;
+    public List<ResponseHolidayDTO> getAllHolidays(Long location, Date startDate,int duration) {
+        Location loc = locationRepository.findById(location).orElseThrow();
+        List<Holiday> holidays = holidayRepository.findAll();
+        return holidays.stream().map(h->modelMapper.map(h,ResponseHolidayDTO.class))
+                .toList();
     }
 
     @Override
     public ResponseHolidayDTO getHolidayById(Long id) {
-        return null;
+        Optional<Holiday> holiday = holidayRepository.findById(id);
+        return modelMapper.map(holiday, ResponseHolidayDTO.class);
+
+
     }
 
     @Override

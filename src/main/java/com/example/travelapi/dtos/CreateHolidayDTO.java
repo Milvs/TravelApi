@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CreateHolidayDTO {
-    private Long location; // map to location_id
+    private Long location;
     private String title;
     private Date startDate;
     private int duration;
