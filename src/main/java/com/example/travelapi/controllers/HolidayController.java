@@ -1,5 +1,6 @@
 package com.example.travelapi.controllers;
 
+import ch.qos.logback.core.encoder.EchoEncoder;
 import com.example.travelapi.dtos.CreateHolidayDTO;
 import com.example.travelapi.dtos.ResponseHolidayDTO;
 import com.example.travelapi.dtos.UpdateHolidayDTO;
@@ -36,25 +37,25 @@ public class HolidayController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Boolean> deleteById(@PathVariable Long id) {
-        boolean response = holidayService.deleteHolidayById(id);
-        if (!response) {
+        try {
+            holidayService.deleteHolidayById(id);
+            return new ResponseEntity<>(true, HttpStatus.OK);
+        } catch (Exception e) {
             return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>(true, HttpStatus.OK);
     }
 
-    //TODO:
     @GetMapping
     public ResponseEntity<List<ResponseHolidayDTO>> getAllHolidays(
             @RequestParam(required = false) Long location,
             @RequestParam(required = false) Date startDate,
-            @RequestParam(required = false) Integer duration
-    ) {
-        List<ResponseHolidayDTO> holidays = holidayService.getAllHolidays(location, startDate, duration);
-        if (holidays.isEmpty()) {
+            @RequestParam(required = false) Integer duration) {
+        try {
+            List<ResponseHolidayDTO> holidays = holidayService.getAllHolidaysByFilters(location, startDate, duration);
+            return new ResponseEntity<>(holidays, HttpStatus.OK);
+        } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>(holidays, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
@@ -75,8 +76,6 @@ public class HolidayController {
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-
-
     }
 
 }

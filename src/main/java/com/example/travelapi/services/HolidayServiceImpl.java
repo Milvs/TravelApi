@@ -7,6 +7,11 @@ import com.example.travelapi.entities.Holiday;
 import com.example.travelapi.entities.Location;
 import com.example.travelapi.repositories.HolidayRepository;
 import com.example.travelapi.repositories.LocationRepository;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.dialect.unique.CreateTableUniqueDelegate;
@@ -25,13 +30,15 @@ public class HolidayServiceImpl implements HolidayService{
     private final HolidayRepository holidayRepository;
     private final LocationRepository locationRepository;
     private final ModelMapper modelMapper;
-
-
+    private final EntityManager em;
 
     @Transactional
     @Override
     public ResponseHolidayDTO createHoliday(CreateHolidayDTO createHolidayDTO) {
-        Location location = locationRepository.findById(createHolidayDTO.getLocation()).orElseThrow();
+        Location location = locationRepository.findById(createHolidayDTO.getLocation()).orElseThrow(() -> {
+            final String errorMessage =
+                    String.format("Location not found for id = %s", createHolidayDTO.getLocation());
+            return new IllegalArgumentException(errorMessage);});
 
         Holiday holiday = Holiday.builder().price(createHolidayDTO.getPrice())
                 .title(createHolidayDTO.getTitle())
@@ -49,20 +56,34 @@ public class HolidayServiceImpl implements HolidayService{
 
     @Transactional
     @Override
-    public Boolean deleteHolidayById(Long id) {
-        Holiday holiday = holidayRepository.findById(id).orElse(null);
-        if (holiday!=null){
-            holidayRepository.delete(holiday);
-            return true;
-        }
-        return false;
+    public void deleteHolidayById(Long id) {
+        Holiday holiday = holidayRepository.findById(id).orElseThrow(() -> {
+            final String errorMessage =
+                    String.format("Holiday not found for id = %s", id);
+            return new IllegalArgumentException(errorMessage);});
 
+            holidayRepository.delete(holiday);
     }
 
     @Override
-    public List<ResponseHolidayDTO> getAllHolidays(Long location, Date startDate,int duration) {
-        Location loc = locationRepository.findById(location).orElseThrow();
-        List<Holiday> holidays = holidayRepository.findAll();
+    public List<ResponseHolidayDTO> getAllHolidaysByFilters(Long location, Date startDate,Integer duration) {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Holiday> cq = cb.createQuery(Holiday.class);
+        Root<Holiday> holidayRoot = cq.from(Holiday.class);
+        List<Predicate> predicates = new ArrayList<>();
+
+        if (location!=null){
+            predicates.add(cb.equal(holidayRoot.get("location"),location));
+        }
+        if (startDate!=null){
+            predicates.add(cb.equal(holidayRoot.get("startDate"),startDate));
+        }
+        if (duration!=null){
+            predicates.add(cb.equal(holidayRoot.get("duration"),duration));
+        }
+        cq.where(predicates.toArray(new Predicate[0]));
+        List<Holiday> holidays = em.createQuery(cq).getResultList();
+
         return holidays.stream().map(h->modelMapper.map(h,ResponseHolidayDTO.class))
                 .toList();
     }
@@ -73,6 +94,7 @@ public class HolidayServiceImpl implements HolidayService{
             final String errorMessage =
                     String.format("Holiday not found for id = %s", id);
             return new IllegalArgumentException(errorMessage);});
+
         return modelMapper.map(holiday, ResponseHolidayDTO.class);
     }
 

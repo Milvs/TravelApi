@@ -12,9 +12,9 @@ public interface HolidayService {
 
     ResponseHolidayDTO createHoliday(CreateHolidayDTO createHolidayDTO);
 
-    Boolean deleteHolidayById(Long id);
+    void deleteHolidayById(Long id);
 
-    List<ResponseHolidayDTO> getAllHolidays(Long location, Date startDate, int duration);
+    List<ResponseHolidayDTO> getAllHolidaysByFilters(Long location, Date startDate, Integer duration);
 
     ResponseHolidayDTO getHolidayById(Long id);
 
