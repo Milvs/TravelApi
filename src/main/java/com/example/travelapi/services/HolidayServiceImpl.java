@@ -7,6 +7,7 @@ import com.example.travelapi.entities.Holiday;
 import com.example.travelapi.entities.Location;
 import com.example.travelapi.repositories.HolidayRepository;
 import com.example.travelapi.repositories.LocationRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.dialect.unique.CreateTableUniqueDelegate;
 import org.modelmapper.ModelMapper;
@@ -26,6 +27,8 @@ public class HolidayServiceImpl implements HolidayService{
     private final ModelMapper modelMapper;
 
 
+
+    @Transactional
     @Override
     public ResponseHolidayDTO createHoliday(CreateHolidayDTO createHolidayDTO) {
         Location location = locationRepository.findById(createHolidayDTO.getLocation()).orElseThrow();
@@ -44,6 +47,7 @@ public class HolidayServiceImpl implements HolidayService{
 
     }
 
+    @Transactional
     @Override
     public Boolean deleteHolidayById(Long id) {
         Holiday holiday = holidayRepository.findById(id).orElse(null);
@@ -72,6 +76,7 @@ public class HolidayServiceImpl implements HolidayService{
         return modelMapper.map(holiday, ResponseHolidayDTO.class);
     }
 
+    @Transactional
     @Override
     public ResponseHolidayDTO updateHoliday(UpdateHolidayDTO updateHoliday) {
         Holiday holiday = holidayRepository.findById(updateHoliday.getId()).orElseThrow(() -> {

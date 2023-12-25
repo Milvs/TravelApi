@@ -21,11 +21,6 @@ import static org.springframework.http.HttpStatus.CREATED;
 @RequestMapping("/holidays")
 @RequiredArgsConstructor
 public class HolidayController {
-//    POST /holidays
-//    DELETE /holidays/{holidayId}
-//    GET /holidays
-//    GET /holidays/{holidayId}
-//    PUT /holidays
 
     private final HolidayService holidayService;
 
