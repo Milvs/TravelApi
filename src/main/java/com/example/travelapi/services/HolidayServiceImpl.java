@@ -25,7 +25,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class HolidayServiceImpl implements HolidayService{
+public class HolidayServiceImpl implements HolidayService {
 
     private final HolidayRepository holidayRepository;
     private final LocationRepository locationRepository;
@@ -38,7 +38,8 @@ public class HolidayServiceImpl implements HolidayService{
         Location location = locationRepository.findById(createHolidayDTO.getLocation()).orElseThrow(() -> {
             final String errorMessage =
                     String.format("Location not found for id = %s", createHolidayDTO.getLocation());
-            return new IllegalArgumentException(errorMessage);});
+            return new IllegalArgumentException(errorMessage);
+        });
 
         Holiday holiday = Holiday.builder().price(createHolidayDTO.getPrice())
                 .title(createHolidayDTO.getTitle())
@@ -50,7 +51,7 @@ public class HolidayServiceImpl implements HolidayService{
 
         holidayRepository.save(holiday);
 
-        return modelMapper.map(holiday,ResponseHolidayDTO.class);
+        return modelMapper.map(holiday, ResponseHolidayDTO.class);
 
     }
 
@@ -60,31 +61,32 @@ public class HolidayServiceImpl implements HolidayService{
         Holiday holiday = holidayRepository.findById(id).orElseThrow(() -> {
             final String errorMessage =
                     String.format("Holiday not found for id = %s", id);
-            return new IllegalArgumentException(errorMessage);});
+            return new IllegalArgumentException(errorMessage);
+        });
 
-            holidayRepository.delete(holiday);
+        holidayRepository.delete(holiday);
     }
 
     @Override
-    public List<ResponseHolidayDTO> getAllHolidaysByFilters(Long location, Date startDate,Integer duration) {
+    public List<ResponseHolidayDTO> getAllHolidaysByFilters(Long location, Date startDate, Integer duration) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Holiday> cq = cb.createQuery(Holiday.class);
         Root<Holiday> holidayRoot = cq.from(Holiday.class);
         List<Predicate> predicates = new ArrayList<>();
 
-        if (location!=null){
-            predicates.add(cb.equal(holidayRoot.get("location"),location));
+        if (location != null) {
+            predicates.add(cb.equal(holidayRoot.get("location"), location));
         }
-        if (startDate!=null){
-            predicates.add(cb.equal(holidayRoot.get("startDate"),startDate));
+        if (startDate != null) {
+            predicates.add(cb.equal(holidayRoot.get("startDate"), startDate));
         }
-        if (duration!=null){
-            predicates.add(cb.equal(holidayRoot.get("duration"),duration));
+        if (duration != null) {
+            predicates.add(cb.equal(holidayRoot.get("duration"), duration));
         }
         cq.where(predicates.toArray(new Predicate[0]));
         List<Holiday> holidays = em.createQuery(cq).getResultList();
 
-        return holidays.stream().map(h->modelMapper.map(h,ResponseHolidayDTO.class))
+        return holidays.stream().map(h -> modelMapper.map(h, ResponseHolidayDTO.class))
                 .toList();
     }
 
@@ -93,7 +95,8 @@ public class HolidayServiceImpl implements HolidayService{
         Holiday holiday = holidayRepository.findById(id).orElseThrow(() -> {
             final String errorMessage =
                     String.format("Holiday not found for id = %s", id);
-            return new IllegalArgumentException(errorMessage);});
+            return new IllegalArgumentException(errorMessage);
+        });
 
         return modelMapper.map(holiday, ResponseHolidayDTO.class);
     }
@@ -104,7 +107,8 @@ public class HolidayServiceImpl implements HolidayService{
         Holiday holiday = holidayRepository.findById(updateHoliday.getId()).orElseThrow(() -> {
             final String errorMessage =
                     String.format("Holiday not found for id = %s", updateHoliday.getId());
-            return new IllegalArgumentException(errorMessage);});
+            return new IllegalArgumentException(errorMessage);
+        });
 
         Location location = locationRepository.findById(updateHoliday.getLocation()).orElseThrow();
         holiday.setPrice(updateHoliday.getPrice());
@@ -114,7 +118,7 @@ public class HolidayServiceImpl implements HolidayService{
         holiday.setTitle(updateHoliday.getTitle());
         holidayRepository.save(holiday);
 
-        return modelMapper.map(holiday,ResponseHolidayDTO.class);
+        return modelMapper.map(holiday, ResponseHolidayDTO.class);
     }
 }
 

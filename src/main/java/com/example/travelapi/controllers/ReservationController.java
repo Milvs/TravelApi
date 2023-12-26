@@ -1,35 +1,32 @@
 package com.example.travelapi.controllers;
 
 import com.example.travelapi.dtos.*;
-import com.example.travelapi.services.HolidayService;
-import com.example.travelapi.services.LocationService;
-import jakarta.transaction.Transactional;
+import com.example.travelapi.services.ReservationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
 import java.util.List;
 
 @RestController
-@RequestMapping("/locations")
+@RequestMapping("/reservations")
 @RequiredArgsConstructor
-public class LocationController {
+public class ReservationController {
 
-    private final LocationService locationService;
+    private final ReservationService reservationService;
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ResponseLocationDTO> createHoliday(@RequestBody CreateLocationDTO createLocationDTO) {
-        ResponseLocationDTO response =locationService.createLocation(createLocationDTO);
+    public ResponseEntity<ResponseReservationDTO> createReservation(@RequestBody CreateReservationDTO createReservationDTO) {
+        ResponseReservationDTO response = reservationService.createReservation(createReservationDTO);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Boolean> deleteById(@PathVariable Long id) {
         try {
-            locationService.deleteLocationById(id);
+            reservationService.deleteReservationById(id);
             return new ResponseEntity<>(true, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
@@ -37,34 +34,31 @@ public class LocationController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ResponseLocationDTO>> getAllLocations() {
+    public ResponseEntity<List<ResponseReservationDTO>> getAllReservations() {
         try {
-            List<ResponseLocationDTO> locations = locationService.getAllLocations();
-            return new ResponseEntity<>(locations, HttpStatus.OK);
+            List<ResponseReservationDTO> reservations = reservationService.getAllReservation();
+            return new ResponseEntity<>(reservations, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ResponseLocationDTO> getLocationById(@PathVariable Long id) {
+    public ResponseEntity<ResponseReservationDTO> getReservationById(@PathVariable Long id) {
         try {
-            ResponseLocationDTO location = locationService.getLocationById(id);
-            return new ResponseEntity<>(location, HttpStatus.OK);
+            ResponseReservationDTO reservation = reservationService.getReservationById(id);
+            return new ResponseEntity<>(reservation, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
-
-
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ResponseLocationDTO> updateLocation(@RequestBody UpdateLocationDTO updateLocationDTO) {
+    public ResponseEntity<ResponseReservationDTO> updateReservation(@RequestBody UpdateReservationDTO updateReservationDTO) {
         try {
-            ResponseLocationDTO location = locationService.updateLocation(updateLocationDTO);
-            return new ResponseEntity<>(location, HttpStatus.OK);
+            ResponseReservationDTO reservations = reservationService.updateReservation(updateReservationDTO);
+            return new ResponseEntity<>(reservations, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
-
 }

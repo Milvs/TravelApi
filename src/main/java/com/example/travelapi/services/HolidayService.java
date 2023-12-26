@@ -3,10 +3,12 @@ package com.example.travelapi.services;
 import com.example.travelapi.dtos.CreateHolidayDTO;
 import com.example.travelapi.dtos.ResponseHolidayDTO;
 import com.example.travelapi.dtos.UpdateHolidayDTO;
+import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+
 
 public interface HolidayService {
 

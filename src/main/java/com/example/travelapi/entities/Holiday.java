@@ -25,7 +25,7 @@ public class Holiday {
     @NotNull
     private String title;
 
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @Temporal(TemporalType.DATE)
     private Date startDate;
 
     @NotNull
