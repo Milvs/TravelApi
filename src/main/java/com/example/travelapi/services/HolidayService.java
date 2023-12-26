@@ -16,7 +16,7 @@ public interface HolidayService {
 
     void deleteHolidayById(Long id);
 
-    List<ResponseHolidayDTO> getAllHolidaysByFilters(Long location, Date startDate, Integer duration);
+    List<ResponseHolidayDTO> getAllHolidaysByFilters(String city,String country, Date startDate, Integer duration);
 
     ResponseHolidayDTO getHolidayById(Long id);
 

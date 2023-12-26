@@ -8,10 +8,7 @@ import com.example.travelapi.entities.Location;
 import com.example.travelapi.repositories.HolidayRepository;
 import com.example.travelapi.repositories.LocationRepository;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Predicate;
-import jakarta.persistence.criteria.Root;
+import jakarta.persistence.criteria.*;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.dialect.unique.CreateTableUniqueDelegate;
@@ -68,15 +65,21 @@ public class HolidayServiceImpl implements HolidayService {
     }
 
     @Override
-    public List<ResponseHolidayDTO> getAllHolidaysByFilters(Long location, Date startDate, Integer duration) {
+    public List<ResponseHolidayDTO> getAllHolidaysByFilters(String city, String country, Date startDate, Integer duration) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Holiday> cq = cb.createQuery(Holiday.class);
         Root<Holiday> holidayRoot = cq.from(Holiday.class);
+
         List<Predicate> predicates = new ArrayList<>();
 
-        if (location != null) {
-            predicates.add(cb.equal(holidayRoot.get("location"), location));
+        if (country != null || city != null) {
+            Join<Holiday, Location> locationJoin = holidayRoot.join("location", JoinType.LEFT);
+
+            Predicate countryPredicate = cb.equal(locationJoin.get("country"), country);
+            Predicate cityPredicate = cb.equal(locationJoin.get("city"), city);
+            predicates.add(cb.or(countryPredicate, cityPredicate));
         }
+
         if (startDate != null) {
             predicates.add(cb.equal(holidayRoot.get("startDate"), startDate));
         }

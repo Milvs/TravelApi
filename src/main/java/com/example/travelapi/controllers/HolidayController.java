@@ -7,6 +7,7 @@ import com.example.travelapi.dtos.UpdateHolidayDTO;
 import com.example.travelapi.services.HolidayService;
 import com.example.travelapi.services.HolidayServiceImpl;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +22,7 @@ import static org.springframework.http.HttpStatus.CREATED;
 @RestController
 @RequestMapping("/holidays")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:5173", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
 public class HolidayController {
 
     private final HolidayService holidayService;
@@ -47,11 +49,12 @@ public class HolidayController {
 
     @GetMapping
     public ResponseEntity<List<ResponseHolidayDTO>> getAllHolidays(
-            @RequestParam(required = false) Long location,
-            @RequestParam(required = false) Date startDate,
+            @RequestParam(required = false) String city,
+            @RequestParam(required = false) String country,
+            @RequestParam(required = false) @DateTimeFormat(pattern="yyyy-MM-dd") Date startDate,
             @RequestParam(required = false) Integer duration) {
         try {
-            List<ResponseHolidayDTO> holidays = holidayService.getAllHolidaysByFilters(location, startDate, duration);
+            List<ResponseHolidayDTO> holidays = holidayService.getAllHolidaysByFilters(city,country, startDate, duration);
             return new ResponseEntity<>(holidays, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
