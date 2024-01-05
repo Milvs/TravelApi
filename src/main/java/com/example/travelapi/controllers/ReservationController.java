@@ -27,40 +27,25 @@ public class ReservationController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Boolean> deleteById(@PathVariable Long id) {
-        try {
-            reservationService.deleteReservationById(id);
-            return new ResponseEntity<>(true, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
-        }
+        reservationService.deleteReservationById(id);
+        return new ResponseEntity<>(true, HttpStatus.OK);
     }
 
     @GetMapping
     public ResponseEntity<List<ResponseReservationDTO>> getAllReservations() {
-        try {
-            List<ResponseReservationDTO> reservations = reservationService.getAllReservation();
-            return new ResponseEntity<>(reservations, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+        List<ResponseReservationDTO> reservations = reservationService.getAllReservation();
+        return new ResponseEntity<>(reservations, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<ResponseReservationDTO> getReservationById(@PathVariable Long id) {
-        try {
-            ResponseReservationDTO reservation = reservationService.getReservationById(id);
-            return new ResponseEntity<>(reservation, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+        ResponseReservationDTO reservation = reservationService.getReservationById(id);
+        return new ResponseEntity<>(reservation, HttpStatus.OK);
     }
+
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ResponseReservationDTO> updateReservation(@RequestBody UpdateReservationDTO updateReservationDTO) {
-        try {
-            ResponseReservationDTO reservations = reservationService.updateReservation(updateReservationDTO);
-            return new ResponseEntity<>(reservations, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+        ResponseReservationDTO reservations = reservationService.updateReservation(updateReservationDTO);
+        return new ResponseEntity<>(reservations, HttpStatus.OK);
     }
 }

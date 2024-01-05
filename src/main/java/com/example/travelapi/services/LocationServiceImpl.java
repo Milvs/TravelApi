@@ -2,16 +2,14 @@ package com.example.travelapi.services;
 
 
 import com.example.travelapi.dtos.CreateLocationDTO;
-import com.example.travelapi.dtos.ResponseHolidayDTO;
 import com.example.travelapi.dtos.ResponseLocationDTO;
 import com.example.travelapi.dtos.UpdateLocationDTO;
-import com.example.travelapi.entities.Holiday;
 import com.example.travelapi.entities.Location;
+import com.example.travelapi.exceptions.LocationNotFoundException;
 import com.example.travelapi.repositories.LocationRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.boot.Banner;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -43,7 +41,7 @@ public class LocationServiceImpl implements LocationService{
         Location location = locationRepository.findById(id).orElseThrow(() -> {
             final String errorMessage =
                     String.format("Location not found for id = %s", id);
-            return new IllegalArgumentException(errorMessage);
+            return new LocationNotFoundException(errorMessage);
         });
 
         locationRepository.delete(location);
@@ -61,7 +59,7 @@ public class LocationServiceImpl implements LocationService{
         Location location = locationRepository.findById(id).orElseThrow(() -> {
             final String errorMessage =
                     String.format("Location not found for id = %s", id);
-            return new IllegalArgumentException(errorMessage);
+            return new LocationNotFoundException(errorMessage);
         });
 
         return modelMapper.map(location, ResponseLocationDTO.class);
@@ -73,7 +71,7 @@ public class LocationServiceImpl implements LocationService{
        Location location = locationRepository.findById(updateLocation.getId()).orElseThrow(() -> {
             final String errorMessage =
                     String.format("Location not found for id = %s", updateLocation.getId());
-            return new IllegalArgumentException(errorMessage);
+            return new LocationNotFoundException(errorMessage);
         });
 
         location.setCity(updateLocation.getCity());

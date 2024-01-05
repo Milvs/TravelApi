@@ -1,0 +1,13 @@
+services:
+  mysql:
+    image: mysql:latest
+    container_name: travel-api-container
+    environment:
+      MYSQL_DATABASE: traveldb
+      MYSQL_ROOT_PASSWORD: milvenadb
+      MYSQL_USER: Milvena
+      MYSQL_PASSWORD: milvena
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./mysql-data:/var/lib/mysql
