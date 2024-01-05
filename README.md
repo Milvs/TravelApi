@@ -10,9 +10,9 @@ This is a Spring Boot-based RESTful API for managing holidays, locations, and re
 - [Usage](#usage)
   - [Running with Docker Compose](#running-with-docker-compose)
   - [Running Without Docker](#running-without-docker)
-- [API Endpoints](#api-endpoints)
-- [Contributing](#contributing)
-- [License](#license)
+  - [API Endpoints](#api-endpoints)
+- [Project Structure](#project-structure)
+
 
 ## Getting Started
 
