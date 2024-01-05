@@ -31,9 +31,9 @@ Make sure you have the following installed on your machine:
    git clone https://github.com/your-username/travel-api.git
    cd travel-api
 
-1.2  Running with Docker Compose
-If you prefer running the application with Docker Compose:
-   Run the MySQL database container:
+1.2  Running with Docker Compose<br>
+If you prefer running the application with Docker Compose:<br>
+Run the MySQL database container:
 
    
     docker-compose up -d
@@ -44,9 +44,9 @@ If you want to stop and remove the container:
    docker-compose down
 ```
 
-1.3 Running with MySQL Database:
-Open the src/main/resources/application.properties file and configure the database connection properties:
-Adjust the API port, database credentials, and other configurations as needed.
+1.3 Running with MySQL Database:<br>
+Open the `src/main/resources/application.properties` file and configure the database connection properties:<br>
+Adjust the API port, database credentials, and other configurations as needed.<br>
 Make sure you have a MySQL database installed and running.
 
    ```bash
