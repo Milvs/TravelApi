@@ -68,7 +68,7 @@ The application will be accessible at http://localhost:8080.
 
 - Create Holiday: `POST /holidays`
 - Delete Holiday: `DELETE /holidays/{id}`
-- Get All Holidays: `GET /holidays`
+- Get All Holidays By Filters: `GET /holidays`
 - Get Holiday by ID: `GET /holidays/{id}`
 - Update Holiday: `PUT /holidays`
 
