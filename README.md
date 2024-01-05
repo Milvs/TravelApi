@@ -99,3 +99,4 @@ The project is organized into controllers, services, and repositories. Exception
 - `src/main/java/com/example/travelapi/entities`: JPA entities representing database tables.
 - `src/main/java/com/example/travelapi/exceptions`: Custom exceptions for error handling. These are centrally handled using the `GlobalExceptionHandler` class.
 - `src/main/java/com/example/travelapi/configurations`: Contains configuration class for `ModelMapper`, responsible for DTO conversion.
+- `src/main/resources/db/migration`: Database migration scripts managed by [Flyway] .
