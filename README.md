@@ -38,9 +38,9 @@ If you prefer running the application with Docker Compose:
    Run the MySQL database container:
 
    ```bash
-   docker-compose up -d
+    docker-compose up -d
 
-    If you want to stop and remove the container:
+If you want to stop and remove the container:
 
    ```bash
    docker-compose down
@@ -51,9 +51,9 @@ Adjust the API port, database credentials, and other configurations as needed.
 Make sure you have a MySQL database installed and running.
 
    ```bash
-spring.datasource.url=jdbc:mysql://localhost:3306/travel_db
-spring.datasource.username=your_username
-spring.datasource.password=your_password
+   spring.datasource.url=jdbc:mysql://localhost:3306/travel_db
+   spring.datasource.username=your_username
+   spring.datasource.password=your_password
 
 Build and run the application!
 
