@@ -37,7 +37,7 @@ public class Holiday {
     @NotNull
     private String price;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     private Location location;
 
     @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL, mappedBy = "holiday")

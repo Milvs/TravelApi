@@ -3,6 +3,8 @@ package com.example.travelapi.services;
 import com.example.travelapi.dtos.CreateHolidayDTO;
 import com.example.travelapi.dtos.ResponseHolidayDTO;
 import com.example.travelapi.dtos.UpdateHolidayDTO;
+import jakarta.persistence.NamedEntityGraph;
+import org.springframework.data.jpa.repository.EntityGraph;
 
 import java.util.Date;
 import java.util.List;

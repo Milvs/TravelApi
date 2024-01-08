@@ -22,7 +22,7 @@ public class Reservation {
     @NotNull
     private String phoneNumber;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     private Holiday holiday;
 
 
