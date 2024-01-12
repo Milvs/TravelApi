@@ -73,12 +73,10 @@ public class HolidayServiceImpl implements HolidayService {
         Fetch<Holiday, Location> locationFetch = holidayRoot.fetch("location", JoinType.LEFT);
         List<Predicate> predicates = new ArrayList<>();
 
-
         if (location != null) {
             String locationToLower = location.toLowerCase();
-            Join<Holiday, Location> locationJoin = holidayRoot.join("location", JoinType.LEFT);
-            Predicate countryPredicate = cb.like(cb.lower(locationJoin.get("country")), "%" + locationToLower + "%");
-            Predicate cityPredicate = cb.like(cb.lower(locationJoin.get("city")), "%" + locationToLower + "%");
+            Predicate countryPredicate = cb.like(cb.lower(holidayRoot.get("location").get("country")), "%" + locationToLower + "%");
+            Predicate cityPredicate = cb.like(cb.lower(holidayRoot.get("location").get("city")), "%" + locationToLower + "%");
             predicates.add(cb.or(countryPredicate, cityPredicate));
         }
 
