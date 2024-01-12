@@ -21,7 +21,6 @@ import java.util.Date;
 import java.util.List;
 
 
-
 @Service
 @RequiredArgsConstructor
 public class HolidayServiceImpl implements HolidayService {
@@ -71,7 +70,7 @@ public class HolidayServiceImpl implements HolidayService {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Holiday> cq = cb.createQuery(Holiday.class);
         Root<Holiday> holidayRoot = cq.from(Holiday.class);
-
+        Fetch<Holiday, Location> locationFetch = holidayRoot.fetch("location", JoinType.LEFT);
         List<Predicate> predicates = new ArrayList<>();
 
 
@@ -92,7 +91,7 @@ public class HolidayServiceImpl implements HolidayService {
         cq.where(predicates.toArray(new Predicate[0]));
         List<Holiday> holidays = em.createQuery(cq).getResultList();
 
-        if (holidays.isEmpty()){
+        if (holidays.isEmpty()) {
             throw new HolidayNotFoundException("Holidays not found for these filters");
         }
 
